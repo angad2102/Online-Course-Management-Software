@@ -43,21 +43,30 @@ class Course(models.Model):
 class Module(models.Model):
 	name = models.CharField(max_length=200)
 	sequence = models.IntegerField()
-	course = models.ForeignKey(Course, on_delete=models.CASCADE)
-	def __str__(self):
-		return self.name   
+	course = models.ForeignKey(Course, on_delete=models.CASCADE)   
 
 class Component(models.Model):
 	name = models.CharField(max_length=200)
-	typ = models.CharField(max_length=200)
+	TEXT = 'TX'
+	IMAGE = 'IM'
+	VIDEO = 'VD'
+	FILE = 'FL'
+	TYPE_CHOICES = (
+		(TEXT, 'Text'),
+		(IMAGE, 'Image'),
+		(VIDEO, 'Video'),
+	)
+	typ = models.CharField(
+		max_length=2,
+		choices = TYPE_CHOICES,
+		default = TEXT,
+	)
 	content = models.TextField()
 	sequence = models.IntegerField()
 	module = models.ForeignKey(Module, on_delete=models.CASCADE)
-	def __str__(self):
-		return self.name   
 
 class CourseParticipantMap(models.Model):
 	participant =  models.ForeignKey(User) 
 	course =  models.ForeignKey(Course)
 	progress = models.CharField(max_length=200)
-	
+
