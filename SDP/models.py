@@ -16,6 +16,8 @@ from django.contrib.auth.models import User
 
 class Category(models.Model):
 	name = models.CharField(max_length=200)
+	def __str__(self):
+		return self.name
 
 class Course(models.Model):
 	name = models.CharField(max_length=200)
@@ -34,21 +36,28 @@ class Course(models.Model):
 		default = DRAFT,
 	)
 	category = models.ForeignKey(Category) 
-	instructor =  models.ForeignKey(User) 
+	instructor =  models.ForeignKey(User)
+	def __str__(self):
+		return self.name 
 
 class Module(models.Model):
 	name = models.CharField(max_length=200)
 	sequence = models.IntegerField()
-	course = models.ForeignKey(Course, on_delete=models.CASCADE)   
+	course = models.ForeignKey(Course, on_delete=models.CASCADE)
+	def __str__(self):
+		return self.name   
 
 class Component(models.Model):
 	name = models.CharField(max_length=200)
 	typ = models.CharField(max_length=200)
 	content = models.TextField()
 	sequence = models.IntegerField()
-	module = models.ForeignKey(Module, on_delete=models.CASCADE)   
+	module = models.ForeignKey(Module, on_delete=models.CASCADE)
+	def __str__(self):
+		return self.name   
 
 class CourseParticipantMap(models.Model):
 	participant =  models.ForeignKey(User) 
 	course =  models.ForeignKey(Course)
 	progress = models.CharField(max_length=200)
+	
