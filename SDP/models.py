@@ -44,6 +44,8 @@ class Module(models.Model):
 	name = models.CharField(max_length=200)
 	sequence = models.IntegerField()
 	course = models.ForeignKey(Course, on_delete=models.CASCADE)   
+	def __str__(self):
+		return self.name 
 
 class Component(models.Model):
 	name = models.CharField(max_length=200)
@@ -55,6 +57,7 @@ class Component(models.Model):
 		(TEXT, 'Text'),
 		(IMAGE, 'Image'),
 		(VIDEO, 'Video'),
+		(FILE, 'File'),
 	)
 	typ = models.CharField(
 		max_length=2,

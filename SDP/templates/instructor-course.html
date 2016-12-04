@@ -80,22 +80,85 @@
                             <a href="/SDP/instructor/"><i class="fa fa-dashboard fa-fw"></i> My Courses</a>
                         </li>
                         {%if course%}
-                            <center><span id='CName'><h3>{{course.name}} <a style="cursor: pointer;" onclick="editCourseName({{course.id}})" ><i class="fa fa-pencil-square-o"  aria-hidden="true"></i></a></center></h3></span><span style="display:none;" id='EditCName'><p><input type="text" class="form-control" value="{{course.name}}" id="newCourseName"> <button class='btn btn-primary' onclick="saveCname({{course.id}})" >Save</button></p></span></h3>
-                            <p><center><span id='CDesc'>{{course.course_detail}} <a style="cursor: pointer;" onclick="editCourseDetails({{course.id}})"><i class="fa fa-pencil-square-o"  aria-hidden="true"></i></a></span></center><span style="display:none;" id='EditCDesc'><p><textarea class="form-control" value="{{course.course_detail}}" id="newCourseDesc">{{course.course_detail}}</textarea>  <button class='btn btn-primary' onclick="saveCDesc({{course.id}})">Save</button></p></span></p>
-                            <p><center>Category: {{course.category}} <a style="cursor: pointer;" onclick="editCourseCategory({{course.id}})"><i class="fa fa-pencil-square-o"  aria-hidden="true"></i></a></center></p>
+                            <span id='CName'>
+                                <h3>{{course.name}} 
+                                    <a style="cursor: pointer;" onclick="editCourseName({{course.id}})" >
+                                        <i class="fa fa-pencil-square-o"  aria-hidden="true"></i>
+                                    </a>
+                                </h3>
+                            </span>
+                            <div style="display:none;" id='EditCName'>
+                            <!-- need to write view and url for this --> 
+                                    <form id="editcname" action="/SDP/instructor/ins-course/{{course.id}}/editname" method="post">
+                                        {% csrf_token %}
+                                    <input type="text" class="form-control" value="{{course.name}}" name= "newCourseName" id="newCourseName"> 
+                                    <button class='btn btn-primary' onclick="saveCname({{course.id}})">Save</button>
+                                    </form>
+                                
+                            </div>
+                      
+                                <div id='CDesc'>
+                                <p>
+                                    {{course.course_detail}}
+                                    <a style="cursor: pointer;" onclick="editCourseDetails({{course.id}})">
+                                        <i class="fa fa-pencil-square-o"  aria-hidden="true"></i>
+                                    </a>
+                                </p>
+                                </div>
+                                <div style="display:none;" id='EditCDesc'>
+                                    <p>
+                                    <!-- need to write view and url for this --> 
+                                    <form id="editcdesc" action="/SDP/instructor/ins-course/{{course.id}}/editdescription" method="post">
+                                    {% csrf_token %}
+                                        <textarea name="newCourseDesc" class="form-control" id="newCourseDesc">{{course.course_detail}}
+                                        </textarea>  
+                                        <button class='btn btn-primary' onclick="saveCDesc({{course.id}})">
+                                            Save
+                                        </button>
+                                        </form>
+                                    </p>
+                                </div>
+              
+                            <div id="CCat">Category: <span id='catname'>{{course.category}}</span>
+                                <a style="cursor: pointer;" onclick="editCourseCategory({{course.id}})">
+                                    <i class="fa fa-pencil-square-o"  aria-hidden="true">
+                                    
+                                    </i>
+                                </a>
+                            </div>
+                            <div style="display:none;" id="editCCat">Category: {{course.category}} 
+                                 <!-- need to write view and url for this --> 
+                                <form id="editcat" action="/SDP/instructor/ins-course/{{course.id}}/editcat" method="post">
+                                {% csrf_token %}
+                                 <select name="cat" id="cat">
+                                    {% for c in categories %}
+                                        
+                                        <option {% ifequal c.name course.category %} 
+                                                    selected 
+                                                {% endifequal %} value="{{c.id}}">
+                                            {{c.name}}
+                                        </option>
+                                    {%endfor%}
+                                </select>
+                                <button class='btn btn-primary' onclick="saveCCat({{course.id}})">
+                                            Save
+                                        </button>
+                                </form>
+                            </div>
+                           
                             <br/>
                         {%endif%}
                         {% if modules %}
                             {% for m in modules %}
                                 <li>
-                                    <a href="/SDP/instructor/ins-course/{{course.id}}/{{m.sequence}}">{{m.sequence}}. {{ m.name }}</a>
+                                    <a href="/SDP/instructor/ins-course/{{course.id}}/{{m.sequence}}">{{ m.name }}</a>
                                 </li>
                             {% endfor %}
 
                         {% endif %}
                         <br/>
                         <li>
-                            <a  onclick="newmodule()" ><i class="fa fa-plus fa-fw"></i>Add Module</a>
+                            <a  onclick="newmodule({{course.id}})" ><i class="fa fa-plus fa-fw"></i>Add Module</a>
                         </li>
                         <br>
                         <br>
@@ -130,20 +193,92 @@
                         <h1 class="page-header">{{cmodule.name}} <a style="cursor: pointer;" onclick="editModuleName({{cmodule.id}})" ><i class="fa fa-pencil-square-o"  aria-hidden="true"></i></a></h1>
                     </div>
                     <div id='edit-head' style="display:none" class="col-lg-6 col-xs-12">
-                        <h1 class="page-header"><input type="text" class="form-control" value="{{cmodule.name}}" id="editModuleName" name=""><button class="btn btn-primary" onclick="saveModuleName({{cmodule.id}});">Save</button></h1>
+                        <h1 class="page-header">
+                       <!-- need to write view and url for this --> 
+                        <form id="editmodulename" action="/SDP/instructor/ins-course/{{cmodule.id}}/editmodule" method="post">
+                        {% csrf_token %}
+                        <input type="text" name="editModuleName" class="form-control" value="{{cmodule.name}}" id="editModuleName" name=""><button class="btn btn-primary" onclick="saveModuleName({{cmodule.id}});">Save</button>
+                        </form>
+                        </h1>
                     </div>
                 </div>
                 <div class="panel-body">
 
-                <!-- To Do -->
-                <!-- Copy the code to display the components from Shen -->
-                <div id="newComp">
+                {% for c in components %}
+                <div class="row">
+                <div class="col-lg-6 col-xs-12">
+                    <div id="{{c.id}}">
+                        <h3>{{c.name}}</h3>
+                        <p>{{c.content}}</p>
+                        <p>{{c.typ}}</p>
+                        <p><button class="btn btn-primary" onclick="editcomp({{c.id}})">Edit Component</button><button class="btn btn-danger pull-right" onclick="deletecomp({{c.id}})">Delete Component</button><p>
+                    </div>
+                    <div id="edit_{{c.id}}" style="display:none;">
+
+                    <!-- need to write view and url for this --> 
+                    <form id="editcomponent_{{c.id}}" action="/SDP/instructor/ins-course/{{c.id}}/editcomponent" method="post">
+                    {% csrf_token %}
+                        <h3><input class="form-control" name='n' type="text" value="{{c.name}}" id="edit_{{c.id}}_name" class="form-control"></h3>
+                        <p><textarea name='editcontent' class="form-control" id="edit_{{c.id}}_content">{{c.content}}</textarea></p>
+                        <p>{{c.typ}}</p>
+                        <p><button class="btn btn-primary" onclick="updatecomponent({{c.id}})">Save</button></p>
+                      </form>  
+                    </div>
+                </div>
+                </div>
+                <hr>
+                {% endfor %}
+                <div id="newComp" style="display:none;">
+                    <h4>Add New Component</h4>
+                    <br/>
+                    <div class='row'>
+                        <div class='col-lg-6 col-xs-12'>
+                        <form id="new-comp" action="/SDP/instructor/ins-course/{{cmodule.id}}/addcomponent" method="post">
+                                    {% csrf_token %}
+                            <input class='form-control' id='n-name' name='n-name' type='text' placeholder='Component Name'>
+                            <br/>
+                            <select class='form-control' id='type' name='type'>
+                                <option value='0'>
+                                    Select Type
+                                </option>
+                                <option value='TX'>
+                                    Text
+                                </option>
+                                <option value='IM'>
+                                    Image
+                                </option>
+                                <option value='VD'>
+                                    Video
+                                </option>
+                                <option value='FL'>
+                                    File
+                                </option>
+                            </select>
+                            <br/>
+                            <textarea placeholder='Content/link' rows=5 id='content' name='content' class='form-control'></textarea> 
+                                Sequence : 
+                            <br/>
+                            </form>
+                        </div>
+                        <br>
+                    </div>
+                    <div class='row'>
+                        <div class='col-lg-6 col-xs-12'>
+                            <br/>
+                            <button class='btn btn-primary' type="submit" form="new-comp" value="Submit">
+                                 Save Component
+                            </button>
+                            <button onclick='backtoModule()' class='btn btn-danger pull-right'>
+                                Cancel
+                            </button>
+                        </div>
+                        </div>
+                </div>
+        
+
                 </div>
                 <div id="saveM" class="row">
                 <br/>
-                <button class='btn btn-default'>
-                    Save Module
-                    </button>
                     <button class='btn btn-primary' onclick="addcomponent()" >
                     Add new component
                     </button>    
@@ -151,11 +286,26 @@
                     Delete Module
                     </button>
                 </div>        
-                </div>
                     <!-- /.col-lg-12 -->
             </div>
             <!-- /.container-fluid -->
-            <div id='newmodule' class="container-fluid">
+
+            <div style='display:none;' id='newmodule' class="container-fluid">
+            <form id="new-module-add" action="/SDP/instructor/ins-course/addnewmodule/{{course.id}}" method="post">
+                 {% csrf_token %}
+                <div class="row">
+                    <div class="col-lg-6 col-xs-12">
+                        <h1 class="page-header">
+                            <input type="text" placeholder="New Module Name" name="add-module-name" id="new-name" class="form-control">
+                        </form>
+                        </h1>
+                    </div>
+                </div>
+                <div class="panel-body">';
+
+                Sequence: <br><div class='row'><div class='col-lg-6 col-xs-12'><button class='btn btn-primary' type="submit" form="new-module-add" value="Submit" >Save New Module</button><button class='btn btn-danger pull-right' onclick='cancelnewmodule()'>Cancel</button></div></div>
+                </div> 
+            </form> 
             </div>
         </div>
         <!-- /#page-wrapper -->
@@ -180,6 +330,7 @@
     <!-- Custom Theme JavaScript -->
     <script src="{% static 'dist/js/sb-admin-2.js' %}"></script>
     <script src="{% static 'dist/js/instructor.js' %}"></script>
+    <script src="{% static 'dist/js/ajax.js' %}"></script>
 
 </body>
 

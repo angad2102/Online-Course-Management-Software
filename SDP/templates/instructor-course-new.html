@@ -89,6 +89,8 @@
         <!-- Page Content -->
         <div id="page-wrapper">
             <div class="container-fluid">
+            <form id="new-course-ass" action="/SDP/instructor/ins-course/addcourse" method="post">
+            {% csrf_token %}
             <div class="row">
                     <div class="col-lg-12">
                         <h1 class="page-header">Add a new course</h1>
@@ -97,7 +99,7 @@
                 <br>
                 <div class="row">
                <div class="col-lg-6 col-xs-12">
-                <input class="form-control" type="text" id="course-name" placeholder="Course Name">
+                <input class="form-control" type="text" name='coursename' id="course-name" placeholder="Course Name">
                 </div>
                 </div>
                 <br>
@@ -105,7 +107,7 @@
 
                 <div class="row">
                <div class="col-lg-6 col-xs-12">
-                <textarea class="form-control" name="description" cols=75 rows=5 placeholder="Description"></textarea>
+                <textarea class="form-control text" name="description" cols=75 rows=5 placeholder="Description"></textarea>
                 </div>
                 </div>
                 <br>
@@ -113,7 +115,7 @@
                 <div class="row">
                     <div class="col-lg-6 col-xs-12">
                     Category : 
-                    <select class="form-control" id="cat">
+                    <select class="form-control" name="cat" id="cat">
                         {%for c in categories%}
                         <option value="{{c.id}}">
                             {{c.name}}
@@ -126,14 +128,14 @@
                 <br>
                 <div class="row">
                     <div class="col-lg-6 col-xs-12">
-                    <input class="form-control" type="text" id="module-name" placeholder="Module 1 Name">
+                    <input class="form-control" type="text" id="module-name" name="modulename" placeholder="Module 1 Name">
                     </div>
                 </div>
                 <br>
                 <div class="row">
                 <div class="col-lg-6 col-xs-12">
                 <br>
-                 <button class='btn btn-default'>
+                 <button class='btn btn-default' type="submit" form="new-course-ass" value="Submit">
                     Create Course
                     </button>
                       
@@ -144,6 +146,7 @@
                 </div>        
                 
                     <!-- /.col-lg-12 -->
+                    </form>
             </div>
             <!-- /.container-fluid -->
         </div>

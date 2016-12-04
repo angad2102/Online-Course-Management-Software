@@ -1,50 +1,6 @@
 function addcomponent(){
-	$("#saveM").css("visibility","hidden");
-	var string = "<h4>Add New Component</h4>\
-	<br/>\
-	<div class='row'>\
-		<div class='col-lg-6 col-xs-12'>\
-			<input class='form-control' id='n-name' type='text' placeholder='Component Name'>\
-			<br/>\
-			<select class='form-control' id='type'>\
-			<option value='0'>\
-			Select Type\
-			</option>\
-				<option value='TX'>\
-					Text\
-				</option>\
-				<option value='IM'>\
-					Image\
-				</option>\
-				<option value='VD'>\
-					Video\
-				</option>\
-				<option value='FL'>\
-					File\
-				</option>\
-			</select>\
-			<br/>\
-			<textarea placeholder='Content/link' rows=5 id='content' class='form-control'></textarea> \
-				Sequence : \
-				<br/>\
-			</div>\
-			<br>\
-		</div>\
-	</div>";
-
-	string += "<div class='row'>\
-		<div class='col-lg-6 col-xs-12'>\
-		<br/>\
-		<button class='btn btn-primary'>\
-		Save Component\
-		</button>\
-		<button onclick='backtoModule()' class='btn btn-danger pull-right'>\
-		Cancel\
-		</button>\
-		<div>\
-		</div>\
-	"
-	$("#newComp").html(string);
+	$("#saveM").css("display","none");
+	$("#newComp").css("display","block");
     
 }
 
@@ -55,16 +11,8 @@ function backtoModule(){
 
 function newmodule() {
 	$("#modules").css("display","none");
-	string = '<div class="row">\
-                    <div class="col-lg-6 col-xs-12">\
-                        <h1 class="page-header"><input type="text" placeholder="New Module Name" id="new-name" class="form-control"></h1>\
-                    </div>\
-                </div>\
-                <div class="panel-body">';
 
-    string += "Sequence: <br><div class='row'><div class='col-lg-6 col-xs-12'><button class='btn btn-primary'>Save New Module</button><button class='btn btn-danger pull-right' onclick='cancelnewmodule()'>Cancel</button></div></div>"
-    string += "</div>";
-	$("#newmodule").html(string);
+	$("#newmodule").css("display","block");
 }
 
 function cancelnewmodule() {
@@ -95,14 +43,44 @@ function editModuleName(moduleID){
 function saveModuleName(moduleID){
 	$("#head").css("display","block");
 	$("#edit-head").css("display","none");
+	$("form#editmodulename").submit();
+}
+function editcomp(ComponentID){
+	$("#"+ComponentID).css("display","none");
+	$("#edit_"+ComponentID).css("display","block");
 }
 
+
+
+function updatecomponent(ComponentID){
+	$("#"+ComponentID).css("display","block");
+	$("#edit_"+ComponentID).css("display","none");
+	$("form#editcomponent_"+ComponentID).submit();
+}
 function saveCname(courseID){
 	$("#CName").css("display","block");
 	$("#EditCName").css("display","none");
+
+	$("form#editcname").submit();
 }
 
 function saveCDesc(courseID){
 	$("#CDesc").css("display","block");
 	$("#EditCDesc").css("display","none");
+
+	$("form#editcdesc").submit();
+
+}
+
+function editCourseCategory(courseID){
+	$("#CCat").css("display","none");
+	$("#editCCat").css("display","block");
+	
+}
+
+function saveCCat(courseID){
+	$("#CCat").css("display","block");
+	$("#editCCat").css("display","none");
+	$("form#editcat").submit();
+
 }
