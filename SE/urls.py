@@ -20,5 +20,7 @@ from django.conf.urls import include
 urlpatterns = [
 	url(r'^SDP/', include('SDP.urls')),
     url(r'^admin/', admin.site.urls),
+    url(r'^SDP/', include('SDP.urls')),
+    url(r'^admin/', admin.site.urls),
 ]
 

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Enroll</title>
+
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="{% static 'vendor/metisMenu/metisMenu.min.css' %}" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="{% static 'dist/css/sb-admin-2.css' %}" rel="stylesheet">
+
+    <!-- Morris Charts CSS -->
+    <link href="{% static 'vendor/morrisjs/morris.css' %}" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="{% static 'vendor/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+     <script type="text/javascript">
+        function search(){
+            var str = $('#searchstr').val();
+        }
+        function enroll(courseid){
+            if(courseid){
+                $.ajax({
+                    url: "http://127.0.0.1:8000/SDP/add/"+courseid+"/",
+                    type: 'get',
+                    success: function(result){
+                        if(result=='success'){ 
+                            alert('You have added the course successfully'); 
+                            location.reload();
+                        }else{
+                            alert('Failed to add this course: '+result);
+                        }
+                    }
+                });
+            }else{
+                return false;
+            }
+        }
+    </script>
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <span class="navbar-brand" href="">Hello</span>
+            </div>
+            <!-- /.navbar-header -->
+
+            <ul class="nav navbar-top-links navbar-right">
+                <li><button class="btn btn-outline btn-primary"><a href="/SDP/mycourse/0/module/0/">My Course</a></button></li>
+                <li><button class="btn btn-outline btn-primary" onclick=""><a>Enroll</a></button></li>
+                <li><button class="btn btn-outline btn-primary"><a href="/SDP/history/0/module/0/">View History</a></button></li>
+                <li><button class="btn btn-outline btn-danger btn-primary"><a href='/SDP/logout' style="color: red">Logout</a></button></li>
+            </ul>
+            <!-- /.navbar-top-links -->
+
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+                        {% if enroll %}
+                        {% for course in enroll %}
+                        <!-- Classes -->
+                        <li>
+                            <a href="/SDP/enroll/{{course.id}}/"><i class="fa fa-table fa-fw"></i> {{course.name}}</a>
+                        </li>
+                        {% endfor %}
+                        {% endif %}
+                        <br>
+                        <br>
+                        {% if enroll %}
+                        <p class="text-primary">
+                            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Status: {{course.status}}
+                        </p>
+                        {% else %}
+                        <p class="text-primary">
+                            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Status: N/A
+                        </p>
+                        {% endif %}
+                        <br>
+                        <br>
+                        <button class="btn btn-outline btn-primary btn-block" onclick="enroll({{course.id}})">Take This Course</button>
+                    </ul>
+                </div>
+                <!-- /.sidebar-collapse -->
+            </div>
+            <!-- /.navbar-static-side -->
+        </nav>
+
+        <div id="page-wrapper">
+        {% if course %}
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">{{course.name}}</h1>
+                    <h3>Category: {{course.category.name}}</h3>
+                    <h3>Instructor: {{course.instructor}}</h3>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="page-header">Description</h3>
+                </div>
+                <div class="col-lg-12">
+                {{course.course_detail}}
+                </div>
+            </div>
+        {% endif %}
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="{% static 'vendor/metisMenu/metisMenu.min.js' %}"></script>
+
+    <!-- Morris Charts JavaScript -->
+    <script src="{% static 'vendor/raphael/raphael.min.js' %}"></script>
+    <script src="{% static 'vendor/morrisjs/morris.min.js' %}"></script>
+    <script src="{% static 'data/morris-data.js' %}"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="{% static 'dist/js/sb-admin-2.js' %}"></script>
+</body>
+
+</html>

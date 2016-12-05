@@ -5,8 +5,8 @@ function addcomponent(){
 }
 
 function backtoModule(){
-	$("#newComp").html("");
-	$("#saveM").css("visibility","visible");
+	$("#newComp").css("display","none");
+	$("#saveM").css("display","block");
 }
 
 function newmodule() {

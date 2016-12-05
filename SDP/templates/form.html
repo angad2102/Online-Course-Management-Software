@@ -1,0 +1,49 @@
+<head>
+<!-- Bootstrap Core CSS -->
+    <link href="http://i.cs.hku.hk/~kpng/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="http://i.cs.hku.hk/~kpng/vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="http://i.cs.hku.hk/~kpng/vendor/dist/css/sb-admin-2.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="http://i.cs.hku.hk/~kpng/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+</head>
+{% load crispy_forms_tags %}
+
+{% block head_extra %}
+{{ form.media }}
+
+{% endblock head_extra %}
+{% block content %}
+
+{% if user.is_authenticated %}
+already logged in
+{%else%}
+<div class=' col-sm-6 col-sm-offset-3'>
+<h1>{{ title }}</h1>
+<hr/>
+<form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
+{{ form|crispy }} 
+<input type='submit' value="{{ title }} ">
+</form>
+{% if title == "Login" %}
+<button><a href="/register" id='{{ title }}'>Register</a></button>
+{% endif %}
+</div>
+{% endif %}
+{% endblock content %}
+
+ <!-- jQuery -->
+    <script src="http://i.cs.hku.hk/~kpng/vendor/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="http://i.cs.hku.hk/~kpng/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="http://i.cs.hku.hk/~kpng/vendor/metisMenu/metisMenu.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="http://i.cs.hku.hk/~kpng/vendor/dist/js/sb-admin-2.js"></script>

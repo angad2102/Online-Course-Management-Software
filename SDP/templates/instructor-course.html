@@ -59,12 +59,8 @@
                         <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
-                        </li>
-                        <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
-                        </li>
                         <li class="divider"></li>
-                        <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        <li><a href="/SDP/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
@@ -152,6 +148,9 @@
                             {% for m in modules %}
                                 <li>
                                     <a href="/SDP/instructor/ins-course/{{course.id}}/{{m.sequence}}">{{ m.name }}</a>
+                                   <a href="/SDP/instructor/ins-course/movemodup/{{ m.id }}">  <i class="fa fa-arrow-up"  aria-hidden="true"></i></a>
+                                   <a href="/SDP/instructor/ins-course/movemoddown/{{ m.id }}">  <i class="fa fa-arrow-down"  aria-hidden="true"></i></a>
+                                    </i>
                                 </li>
                             {% endfor %}
 
@@ -168,14 +167,11 @@
                         <br/>
                         <br/>
                         <li>
-                            <a href="">Save</a>
-                        </li>
-                        <li>
-                            <a href="">Delete</a>
+                            <a href="/SDP/inst-course/delete/{{course.id}}">Delete</a>
                         </li>
                         {%if course.status == "Draft" %}
                         <li>
-                            <a href="">Publish</a>
+                            <a href="/SDP/inst-course/publish/{{course.id}}">Publish</a>
                         </li>
                         {%endif%}
                     </ul>
@@ -206,12 +202,12 @@
 
                 {% for c in components %}
                 <div class="row">
-                <div class="col-lg-6 col-xs-12">
+                <div class="col-lg-6 col-xs-10">
                     <div id="{{c.id}}">
                         <h3>{{c.name}}</h3>
                         <p>{{c.content}}</p>
                         <p>{{c.typ}}</p>
-                        <p><button class="btn btn-primary" onclick="editcomp({{c.id}})">Edit Component</button><button class="btn btn-danger pull-right" onclick="deletecomp({{c.id}})">Delete Component</button><p>
+                        <p><button class="btn btn-primary" onclick="editcomp({{c.id}})">Edit Component</button><button class="btn btn-danger pull-right" onclick="window.location.href='/SDP/inst-course/deletecomponent/{{c.id}}'">Delete Component</button><p>
                     </div>
                     <div id="edit_{{c.id}}" style="display:none;">
 
@@ -224,6 +220,10 @@
                         <p><button class="btn btn-primary" onclick="updatecomponent({{c.id}})">Save</button></p>
                       </form>  
                     </div>
+                </div>
+                <div class="col-lg-6 col-xs-2">
+                <a href="/SDP/instructor/ins-course/movecompup/{{c.id}}">  <i class="fa fa-arrow-up"  aria-hidden="true"></i></a>
+                 <a href="/SDP/instructor/ins-course/movecompdown/{{c.id}}">  <i class="fa fa-arrow-down"  aria-hidden="true"></i></a>
                 </div>
                 </div>
                 <hr>
@@ -256,7 +256,6 @@
                             </select>
                             <br/>
                             <textarea placeholder='Content/link' rows=5 id='content' name='content' class='form-control'></textarea> 
-                                Sequence : 
                             <br/>
                             </form>
                         </div>
@@ -282,7 +281,7 @@
                     <button class='btn btn-primary' onclick="addcomponent()" >
                     Add new component
                     </button>    
-                    <button class='btn btn-danger pull-right'>
+                    <button class='btn btn-danger pull-right' onclick="window.location.href='/SDP/inst-course/deletemodule/{{cmodule.id}}'">
                     Delete Module
                     </button>
                 </div>        
@@ -303,7 +302,7 @@
                 </div>
                 <div class="panel-body">';
 
-                Sequence: <br><div class='row'><div class='col-lg-6 col-xs-12'><button class='btn btn-primary' type="submit" form="new-module-add" value="Submit" >Save New Module</button><button class='btn btn-danger pull-right' onclick='cancelnewmodule()'>Cancel</button></div></div>
+                <br><div class='row'><div class='col-lg-6 col-xs-12'><button class='btn btn-primary' type="submit" form="new-module-add" value="Submit" >Save New Module</button><button class='btn btn-danger pull-right' onclick='cancelnewmodule()'>Cancel</button></div></div>
                 </div> 
             </form> 
             </div>
