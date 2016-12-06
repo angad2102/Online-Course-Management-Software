@@ -13,6 +13,16 @@ from django.contrib.auth.models import User
 # 	title = models.CharField(max_length=200)
 # 	content = models.TextField()
 # 	tags = models.ManyToManyField(Tag)
+class RightsSupport(models.Model):
+	class Meta:
+
+		managed = False  # No database table creation or deletion operations \
+						# will be performed for this model. 
+
+		permissions = ( 
+			('instructor', 'Instructor'),  
+			('admin', 'Admin'), 
+		)
 
 class Category(models.Model):
 	name = models.CharField(max_length=200)

@@ -10,7 +10,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Enroll</title>
+    <title>SDP Enroll</title>
 
     <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
 
@@ -39,7 +39,7 @@
         function enroll(courseid){
             if(courseid){
                 $.ajax({
-                    url: "http://127.0.0.1:8000/SDP/add/"+courseid+"/",
+                    url: "/SDP/add/"+courseid+"/",
                     type: 'get',
                     success: function(result){
                         if(result=='success'){ 
@@ -64,17 +64,26 @@
         <!-- Navigation -->
         <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
             <div class="navbar-header">
-                <span class="navbar-brand" href="">Hello</span>
+                <span class="navbar-brand" href="">SDP - Participant</span>
             </div>
             <!-- /.navbar-header -->
 
             <ul class="nav navbar-top-links navbar-right">
-                <li><button class="btn btn-outline btn-primary"><a href="/SDP/mycourse/0/module/0/">My Course</a></button></li>
-                <li><button class="btn btn-outline btn-primary" onclick=""><a>Enroll</a></button></li>
-                <li><button class="btn btn-outline btn-primary"><a href="/SDP/history/0/module/0/">View History</a></button></li>
-                <li><button class="btn btn-outline btn-danger btn-primary"><a href='/SDP/logout' style="color: red">Logout</a></button></li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li class="divider"></li>
+                        <li><a href="/SDP/mycourse/0/module/0/">My Course</a></li>
+                        <li><a href="/SDP/history/0/module/0/">View History</a></li>
+                        <li><a href="/SDP/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-user -->
+                </li>
+                <!-- /.dropdown -->
             </ul>
-            <!-- /.navbar-top-links -->
 
             <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">

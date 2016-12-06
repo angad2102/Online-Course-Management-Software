@@ -61,6 +61,7 @@
                     <ul class="dropdown-menu dropdown-user">
                         
                         <li class="divider"></li>
+                        <li><a href="/SDP/mycourse/0/module/0"><i class="fa fa-sign-out fa-fw"></i> Participant</a>
                         <li><a href="/SDP/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                         </li>
                     </ul>
@@ -104,7 +105,7 @@
 
                 <div class="row">
                <div class="col-lg-6 col-xs-12">
-                <textarea class="form-control text" name="description" cols=75 rows=5 placeholder="Description"></textarea>
+                <textarea class="form-control text" id="c-desc" name="description" cols=75 rows=5 placeholder="Description"></textarea>
                 </div>
                 </div>
                 <br>
@@ -129,10 +130,11 @@
                     </div>
                 </div>
                 <br>
+                 </form>
                 <div class="row">
                 <div class="col-lg-6 col-xs-12">
                 <br>
-                 <button class='btn btn-default' type="submit" form="new-course-ass" value="Submit">
+                 <button class='btn btn-default' onclick="createnewcourse();">
                     Create Course
                     </button>
                       
@@ -143,7 +145,7 @@
                 </div>        
                 
                     <!-- /.col-lg-12 -->
-                    </form>
+                   
             </div>
             <!-- /.container-fluid -->
         </div>
@@ -168,6 +170,8 @@
 
     <!-- Custom Theme JavaScript -->
     <script src="{% static 'dist/js/sb-admin-2.js' %}"></script>
+    <script src="{% static 'dist/js/instructor.js' %}"></script>
+
 
 </body>
 

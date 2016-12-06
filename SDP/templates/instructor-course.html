@@ -60,6 +60,7 @@
                     </a>
                     <ul class="dropdown-menu dropdown-user">
                         <li class="divider"></li>
+                        <li><a href="/SDP/mycourse/0/module/0"><i class="fa fa-sign-out fa-fw"></i> Participant</a>
                         <li><a href="/SDP/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                         </li>
                     </ul>
@@ -88,8 +89,9 @@
                                     <form id="editcname" action="/SDP/instructor/ins-course/{{course.id}}/editname" method="post">
                                         {% csrf_token %}
                                     <input type="text" class="form-control" value="{{course.name}}" name= "newCourseName" id="newCourseName"> 
-                                    <button class='btn btn-primary' onclick="saveCname({{course.id}})">Save</button>
+                                    
                                     </form>
+                                    <button class='btn btn-primary' onclick="saveCname({{course.id}})">Save</button>
                                 
                             </div>
                       
@@ -108,10 +110,11 @@
                                     {% csrf_token %}
                                         <textarea name="newCourseDesc" class="form-control" id="newCourseDesc">{{course.course_detail}}
                                         </textarea>  
-                                        <button class='btn btn-primary' onclick="saveCDesc({{course.id}})">
+                                       
+                                        </form>
+                                         <button class='btn btn-primary' onclick="saveCDesc({{course.id}})">
                                             Save
                                         </button>
-                                        </form>
                                     </p>
                                 </div>
               
@@ -193,8 +196,9 @@
                        <!-- need to write view and url for this --> 
                         <form id="editmodulename" action="/SDP/instructor/ins-course/{{cmodule.id}}/editmodule" method="post">
                         {% csrf_token %}
-                        <input type="text" name="editModuleName" class="form-control" value="{{cmodule.name}}" id="editModuleName" name=""><button class="btn btn-primary" onclick="saveModuleName({{cmodule.id}});">Save</button>
+                        <input type="text" name="editModuleName" class="form-control" value="{{cmodule.name}}" id="editModuleName" name="">
                         </form>
+                        <button class="btn btn-primary" onclick="saveModuleName({{cmodule.id}});">Save</button>
                         </h1>
                     </div>
                 </div>
@@ -217,8 +221,9 @@
                         <h3><input class="form-control" name='n' type="text" value="{{c.name}}" id="edit_{{c.id}}_name" class="form-control"></h3>
                         <p><textarea name='editcontent' class="form-control" id="edit_{{c.id}}_content">{{c.content}}</textarea></p>
                         <p>{{c.typ}}</p>
-                        <p><button class="btn btn-primary" onclick="updatecomponent({{c.id}})">Save</button></p>
+                        
                       </form>  
+                      <p><button class="btn btn-primary" onclick="updatecomponent({{c.id}})">Save</button></p>
                     </div>
                 </div>
                 <div class="col-lg-6 col-xs-2">
@@ -238,7 +243,7 @@
                             <input class='form-control' id='n-name' name='n-name' type='text' placeholder='Component Name'>
                             <br/>
                             <select class='form-control' id='type' name='type'>
-                                <option value='0'>
+                                <option value=''>
                                     Select Type
                                 </option>
                                 <option value='TX'>
@@ -264,7 +269,7 @@
                     <div class='row'>
                         <div class='col-lg-6 col-xs-12'>
                             <br/>
-                            <button class='btn btn-primary' type="submit" form="new-comp" value="Submit">
+                            <button class='btn btn-primary' onclick="addnewComponent()">
                                  Save Component
                             </button>
                             <button onclick='backtoModule()' class='btn btn-danger pull-right'>

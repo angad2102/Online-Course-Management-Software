@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import Http404
 from django.shortcuts import render_to_response
 from django.template import loader
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User,Permission
 from django.db import models
 from .models import Course
 from .models import Module
@@ -22,6 +22,7 @@ from django.contrib.auth import authenticate, get_user_model, login,logout
 from .forms import UserLoginForm, UserRegisterForm
 from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
+from django.contrib.contenttypes.models import ContentType
 
 
 # Create your views here.
@@ -46,8 +47,10 @@ def attempt_login(request):
 	user = authenticate(username=uname, password=pwd)
 	if user is not None:
 		login(request, user)
-		URL = "/SDP/mycourse/1/module/1/"
-		if user.has_perm('instructor'):
+		URL = "/SDP/mycourse/0/module/0/"
+		if user.has_perm('SDP.admin'):
+			URL = "/SDP/administrator/"
+		elif user.has_perm('SDP.instructor'):
 			URL = "/SDP/instructor/"
 	else:
 		URL = "/SDP/login_incorrect"
@@ -56,9 +59,8 @@ def attempt_login(request):
 	return HttpResponseRedirect(URL)
 
 def login_incorrect(request):
-	template = loader.get_template('login.html')
+	template = loader.get_template('login_error.html')
 	context = {
-		'name':"incorrect/empty",
 	}
 	return HttpResponse(template.render(context, request))
 
@@ -76,7 +78,7 @@ def index(request):
 #user =  Users.objects.get(pk=user_id)
 
 @login_required(login_url='/SDP/login')
-@permission_required('instructor')
+@permission_required('SDP.instructor')
 def instructor(request):
 
 	user = request.user
@@ -95,7 +97,7 @@ def instructor(request):
 	return HttpResponse(template.render(context, request))
 	
 @login_required(login_url='/SDP/login')
-@permission_required('instructor')
+@permission_required('SDP.instructor')
 def instructorcourse(request,course_id,module_id):
 
 	course = Course.objects.get(pk=course_id)
@@ -133,7 +135,7 @@ def instructorcourse(request,course_id,module_id):
 	return HttpResponse(template.render(context, request))
 
 @login_required(login_url='/SDP/login')
-@permission_required('instructor')
+@permission_required('SDP.instructor')
 def instructorcoursenew(request):
 
 	template = loader.get_template('instructor-course-new.html')
@@ -145,7 +147,7 @@ def instructorcoursenew(request):
 	return HttpResponse(template.render(context, request))
 
 @login_required(login_url='/SDP/login')
-@permission_required('instructor')
+@permission_required('SDP.instructor')
 def addnewModule(request,course_id):
 
 		post_text = request.POST.get('add-module-name')
@@ -163,7 +165,7 @@ def addnewModule(request,course_id):
 		return HttpResponseRedirect('/SDP/instructor/ins-course/'+str(course_id)+'/'+str(module.sequence))
 
 @login_required(login_url='/SDP/login')
-@permission_required('instructor')
+@permission_required('SDP.instructor')
 def addnewCourse(request):
 	cname = request.POST.get('coursename')
 	des = request.POST.get('description')
@@ -182,12 +184,14 @@ def addnewCourse(request):
 	return HttpResponseRedirect('/SDP/instructor')
 
 @login_required(login_url='/SDP/login')
-@permission_required('instructor')
+@permission_required('SDP.instructor')
 def addnewComponent(request,module_id):
 	cname = request.POST.get('n-name')
 	typ = request.POST.get('type')
 	cont = request.POST.get('content')
-
+	if typ == "VD":
+		print("angad")
+		cont = cont.replace("watch?v=", "v/")
 	if((cname=="")and(typ=="")and(cont=="")):
 			return HttpResponseRedirect('/SDP/instructor/ins-course/'+str(md.course.id)+'/1')
 
@@ -201,7 +205,7 @@ def addnewComponent(request,module_id):
 	return HttpResponseRedirect('/SDP/instructor/ins-course/'+str(md.course.id)+'/'+str(md.sequence))
 
 @login_required(login_url='/SDP/login')
-@permission_required('instructor')
+@permission_required('SDP.instructor')
 def editcoursename(request,course_id):
 	cname = request.POST.get('newCourseName')
 	course = Course.objects.get(pk=course_id)
@@ -210,17 +214,16 @@ def editcoursename(request,course_id):
 	return HttpResponseRedirect('/SDP/instructor/ins-course/'+str(course_id)+'/1')
 
 @login_required(login_url='/SDP/login')
-@permission_required('instructor')
+@permission_required('SDP.instructor')
 def editcoursedesc(request,course_id):
 	cname = request.POST.get('newCourseDesc')
 	course = Course.objects.get(pk=course_id)
 	course.course_detail = cname
-	course.name=cname
 	course.save()
 	return HttpResponseRedirect('/SDP/instructor/ins-course/'+str(course_id)+'/1')
 
 @login_required(login_url='/SDP/login')
-@permission_required('instructor')
+@permission_required('SDP.instructor')
 def editcoursecat(request,course_id):
 	cname = request.POST.get('cat')
 	course = Course.objects.get(pk=course_id)
@@ -229,7 +232,7 @@ def editcoursecat(request,course_id):
 	return HttpResponseRedirect('/SDP/instructor/ins-course/'+str(course_id)+'/1')
 
 @login_required(login_url='/SDP/login')
-@permission_required('instructor')
+@permission_required('SDP.instructor')
 def editmodule(request,module_id):
 	cname = request.POST.get('editModuleName')
 	module = Module.objects.get(pk=module_id)
@@ -238,7 +241,7 @@ def editmodule(request,module_id):
 	return HttpResponseRedirect('/SDP/instructor/ins-course/'+str(module.course.id)+'/'+str(module.sequence))
 
 @login_required(login_url='/SDP/login')
-@permission_required('instructor')
+@permission_required('SDP.instructor')
 def editcomponent(request,component_id):
 	cname = request.POST.get('n')
 	ccontent = request.POST.get('editcontent')
@@ -345,7 +348,7 @@ def drop(request, course_id):
 		cpm = CourseParticipantMap.objects.filter(participant=user).get(course=Course.objects.get(pk=course_id))
 	except cpm.DoesNotExist:
 		return HttpResponse('You can not drop this course')
-	if cpm.progress > 0:
+	if int(cpm.progress) > 0:
 		cpm.delete()
 	return HttpResponse('success')
 
@@ -400,14 +403,14 @@ def finish(request, course_id, module_id):
 	return HttpResponse('success')
 
 @login_required(login_url='/SDP/login')
-@permission_required('instructor')
+@permission_required('SDP.instructor')
 def deleteCourse(request,course_id):
 	course = Course.objects.get(pk=course_id)
 	course.delete()
 	return HttpResponseRedirect('/SDP/instructor')
 
 @login_required(login_url='/SDP/login')
-@permission_required('instructor')
+@permission_required('SDP.instructor')
 def publishCourse(request,course_id):
 	course = Course.objects.get(pk=course_id)
 	course.status = "OP"
@@ -415,7 +418,7 @@ def publishCourse(request,course_id):
 	return HttpResponseRedirect('/SDP/instructor/ins-course/'+str(course_id)+'/1')
 
 @login_required(login_url='/SDP/login')
-@permission_required('instructor')
+@permission_required('SDP.instructor')
 def deleteComponent(request,c_id):
 	comp = Component.objects.get(pk=c_id)
 	m = comp.module.sequence
@@ -424,7 +427,7 @@ def deleteComponent(request,c_id):
 	return HttpResponseRedirect('/SDP/instructor/ins-course/'+str(c)+'/'+str(m))
 
 @login_required(login_url='/SDP/login')
-@permission_required('instructor')
+@permission_required('SDP.instructor')
 def deleteModule(request,m_id):
 	
 	mod = Module.objects.get(pk=m_id)
@@ -445,7 +448,7 @@ def deleteModule(request,m_id):
 	return HttpResponseRedirect('/SDP/instructor/ins-course/'+str(c)+'/1')
 
 @login_required(login_url='/SDP/login')
-@permission_required('instructor')
+@permission_required('SDP.instructor')
 def mup(request,id):
 	m = Module.objects.get(pk=id)
 	modules = sorted(map(int,Module.objects.filter(course=Module.objects.get(pk=id).course).values_list('sequence', flat=True)))
@@ -474,7 +477,7 @@ def mup(request,id):
 	return HttpResponseRedirect('/SDP/instructor/ins-course/'+str(m.course.id)+'/'+str(m.sequence))
 
 @login_required(login_url='/SDP/login')
-@permission_required('instructor')
+@permission_required('SDP.instructor')
 def mdown(request,id):
 	m = Module.objects.get(pk=id)
 	modules = sorted(map(int,Module.objects.filter(course=Module.objects.get(pk=id).course).values_list('sequence', flat=True)))
@@ -505,7 +508,7 @@ def mdown(request,id):
 	return HttpResponseRedirect('/SDP/instructor/ins-course/'+str(m.course.id)+'/'+str(m.sequence))
 
 @login_required(login_url='/SDP/login')
-@permission_required('instructor')
+@permission_required('SDP.instructor')
 def cup(request,id):
 	c = Component.objects.get(pk=id)
 	components = sorted(map(int,Component.objects.filter(module=Component.objects.get(pk=id).module).values_list('sequence', flat=True)))
@@ -532,7 +535,7 @@ def cup(request,id):
 	return HttpResponseRedirect('/SDP/instructor/ins-course/'+str(c.module.course.id)+'/'+str(c.module.sequence))
 
 @login_required(login_url='/SDP/login')
-@permission_required('instructor')
+@permission_required('SDP.instructor')
 def cdown(request,id):
 	c = Component.objects.get(pk=id)
 	components = sorted(map(int,Component.objects.filter(module=Component.objects.get(pk=id).module).values_list('sequence', flat=True)))
@@ -554,4 +557,39 @@ def cdown(request,id):
 
 	return HttpResponseRedirect('/SDP/instructor/ins-course/'+str(c.module.course.id)+'/'+str(c.module.sequence))
 
+@login_required(login_url='/SDP/login')
+@permission_required('SDP.admin')
+def administrator_view(request):
+	users = User.objects.all()
+	for u in users: 
+		if u.has_perm("SDP.instructor"):
+			u.ins =1
+	return render(request, "admin.html", {"users":users})
 
+@login_required(login_url='/SDP/login')
+@permission_required('SDP.admin')
+def add_instructor_view(request, username):
+	permission = Permission.objects.get(codename='instructor')
+	#permission = Permission.objects.get(codename='instructor') 
+	user = User.objects.get(pk=username)
+	user.user_permissions.add(permission) 
+	return redirect('/SDP/administrator')
+
+def attmeptregister(request):
+	u = request.POST.get('username')
+	pwd = request.POST.get('pwd')
+
+	user = User.objects.create_user(username=u,
+                                 password=pwd)
+	user.save()
+	login(request,user)
+	return redirect('/SDP/mycourse/0/module/0')
+
+def register(request):
+	template = loader.get_template('register.html')
+	context = {
+	}
+	return HttpResponse(template.render(context, request))
+# def all_participants(request):
+# 	user = User.objects.filter(groups__name='Participant')
+# 	return render(request, "hr.html", {"user" :user})

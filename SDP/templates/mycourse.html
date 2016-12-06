@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Participant</title>
+    <title>SDP Participant</title>
     <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
 
     <!-- MetisMenu CSS -->
@@ -40,7 +40,7 @@
             var c = confirm("Are you sure to drop this course?");
             if(c==true){
                 $.ajax({
-                    url: "http://127.0.0.1:8000/SDP/drop/"+courseid+"/",
+                    url: "/SDP/drop/"+courseid+"/",
                     type: 'get',
                     success: function(result){
                         if(result=='success'){ 
@@ -61,7 +61,7 @@
             if(!courseid) return false;
             if(!moduleid) return false;
                 $.ajax({
-                    url: "http://127.0.0.1:8000/SDP/finish/"+courseid+"/"+moduleid+"/",
+                    url: "/SDP/finish/"+courseid+"/"+moduleid+"/",
                     type: 'get',
                     success: function(result){
                         if(result=='success'){ 
@@ -69,7 +69,7 @@
                             location.reload();
                         }else{
                             alert('Congratulations! You have finished this course!');
-                            window.location.href = "http://127.0.0.1:8000/SDP/mycourse/0/module/0/";
+                            window.location.href = "/SDP/mycourse/0/module/0/";
                         }
                     }
                 });
@@ -86,15 +86,22 @@
         <!-- Navigation -->
         <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
             <div class="navbar-header">
-                <span class="navbar-brand" href="">Hello</span>
+                <span class="navbar-brand" href="">SDP - Participant</span>
             </div>
             <!-- /.navbar-header -->
-
             <ul class="nav navbar-top-links navbar-right">
-                <li><button class="btn btn-outline btn-primary"><a>My Course</a></button></li>
-                <li><button class="btn btn-outline btn-primary"><a href="/SDP/enroll/0/">Enroll</a></button></li>
-                <li><button class="btn btn-outline btn-primary"><a href="/SDP/history/0/module/0/">View History</a></button></li>
-                <li><button class="btn btn-outline btn-danger btn-primary"><a href='/SDP/logout' style="color: red">Logout</a></button></li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li><a href="/SDP/enroll/0/">Enroll</a></li>
+                        <li><a href="/SDP/history/0/module/0/">View History</a></li>
+                        <li><a href='/SDP/logout'>Logout</a></li>
+                    </ul>
+                    <!-- /.dropdown-user -->
+                </li>
+                <!-- /.dropdown -->
             </ul>
             <!-- /.navbar-top-links -->
 

@@ -27,7 +27,7 @@ urlpatterns = [
 	url(r'^finish/(?P<course_id>[0-9]+)/(?P<module_id>[0-9]+)/$', views.finish, name='finish'),
 	url(r'^login', views.login_view, name="login" ),  
     url(r'^logout/$', views.logout_view, name="logout" ),  
-    url(r'^hr/$', views.all_participants, name="hr" ),
+    url(r'^hr/$', views.all_participants),
     url(r'^attemptlogin',views.attempt_login),  
     url(r'^login_incorrect',views.login_incorrect),
     url(r'^inst-course/delete/(?P<course_id>\d+)$', views.deleteCourse),
@@ -38,4 +38,8 @@ urlpatterns = [
     url(r'^instructor/ins-course/movemodup/(?P<id>\d+)$', views.mup),
     url(r'^instructor/ins-course/movecompup/(?P<id>\d+)$', views.cup),
     url(r'^instructor/ins-course/movecompdown/(?P<id>\d+)$', views.cdown),
+    url(r'^administrator/$', views.administrator_view),
+    url(r'^assigninstructor/(?P<username>\d+)/$', views.add_instructor_view),
+    url(r'^register', views.register),
+    url(r'^attemptregister',views.attmeptregister),
 ] 

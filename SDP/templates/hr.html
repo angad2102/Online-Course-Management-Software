@@ -21,14 +21,14 @@
     <!-- Custom Theme JavaScript -->
     <script src="http://i.cs.hku.hk/~kpng/vendor/dist/js/sb-admin-2.js"></script>
 </head>
- 
+{% ifequal user.groups.all.0 'HR' %}
+<div class = "logout"><a href ="/logout">Logout</a></div>
 {%for parti in user %} 
-	{{ parti.get_full_name }} {{ }}
+	{{ parti.get_full_name }} to be filled with status
 	<br/>
-	
-{% endfor %}
-<!--{% ifequal user.groups.all.0 'HR' %}
--->
-<!--
+	{% endfor %}
+
+{% else %}
 permission denied
-{% endifequal %}-->
+{% endifequal %}
+

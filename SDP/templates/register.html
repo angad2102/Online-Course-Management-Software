@@ -43,22 +43,23 @@
             <div class="col-md-4 col-md-offset-4">
                 <div class="login-panel panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Please Sign In</h3>
+                        <h3 class="panel-title">Please Register</h3>
                     </div>
                     <div class="panel-body">
-                        <form id="login" action="/SDP/attemptlogin" method="post" >
+                        <form id="register" action="/SDP/attemptregister" method="post" >
                         {% csrf_token %}
                             <fieldset>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="Username" name="username" type="text" autofocus>
+                                    <input class="form-control" id='use' placeholder="Username" name="username" type="text" autofocus>
                                 </div>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="Password" name="pwd" type="password" value="">
+                                    <input class="form-control" id='pas' placeholder="Password" name="pwd" type="password" value="">
                                 </div>
                                 <!-- Change this to a button or input when using this as a form -->
-                                <button  class="btn btn-primary form-control" onclick='$("form#login").submit();''>Login</button>
+                                
                             </fieldset>
                         </form>
+                        <button  class="btn btn-primary form-control" onclick='tryregister();'>Register</button>
                     </div>
                 </div>
             </div>
@@ -84,10 +85,27 @@
     <script src="{% static 'dist/js/instructor.js' %}"></script>
     <script src="{% static 'dist/js/ajax.js' %}"></script>
     <script type="text/javascript">
-        {% if name %}
-            alert("login details empty/incorrect. Please try again.");
-        {% endif %}
+       function tryregister(){
+                if($("#use").val()==""||$("#use").val()==null){
+                    alert("Please enter a username");
+                    return;
+                }
+                if($("#pas").val()==""||$("#pas").val()==null){
+                    alert("Please enter a password");
+                    return;
+                }
+                if($("#use").val().length<6){
+                    alert("Username has to be greater than 5 characters");
+                    return;
+                }
+                if($("#pas").val().length<7){
+                    alert("Password has to be more than 7 characters");
+                    return;
+                }
+                $("form#register").submit();
+       }
     </script>
+
 </body>
 
 </html>
